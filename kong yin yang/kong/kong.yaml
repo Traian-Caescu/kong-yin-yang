@@ -1,0 +1,33 @@
+_format_version: "3.0"
+
+services:
+  - name: yin
+   # url: http://host.docker.internal:4000   # Target is a local container
+   # url: http://host.docker.internal:3000   # When target is not a container but, say vscode
+    url: http://10.0.0.9:4000
+    routes:
+      - name: yin
+        paths:
+         - /yin/  # Path needs to be yin with something after it. e.g. yin/ is '/' path, /yin/want-yang etc
+    
+
+  - name: yang
+   # url: http://host.docker.internal:4001 # Target is a local container
+   # url: http://host.docker.internal:3001  # When target is not a container
+    url: http://10.0.0.9:4001
+    routes:
+      - name: yang
+        paths:
+         - /yang/
+     
+
+plugins:
+  - name: rate-limiting
+    service: yin
+    config:
+      minute: 9      # Note if browser requests resources such as css, then they count
+
+  - name: rate-limiting
+    service: yang
+    config:
+      minute: 6 
